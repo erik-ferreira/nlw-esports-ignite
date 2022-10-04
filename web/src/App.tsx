@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 
 import { api } from "./services/api";
 
@@ -8,6 +9,7 @@ import { CreatedAdBanner } from "@components/CreatedAdBanner";
 import logoImg from "./assets/logo-nlw-esports.svg";
 
 import "./styles/main.css";
+import { GameController } from "phosphor-react";
 
 interface Game {
   id: string;
@@ -54,7 +56,86 @@ function App() {
         ))}
       </div>
 
-      <CreatedAdBanner />
+      <Dialog.Root>
+        <CreatedAdBanner />
+        <Dialog.Portal>
+          <Dialog.Overlay className="bg-black/60 inset-0 fixed" />
+
+          <Dialog.Content
+            className="w-[480px] fixed bg-[#2A2634] py-8 px-10 text-white 
+            top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-lg 
+            shadow-black/25"
+          >
+            <Dialog.Title className="text-3xl font-black">
+              Publique um anúncio
+            </Dialog.Title>
+            <Dialog.Content>
+              <form>
+                <div>
+                  <label htmlFor="game">Qual o game?</label>
+                  <input
+                    id="game"
+                    placeholder="Selecione o game que deseja jogar"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="name">Seu nome (ou nickname)</label>
+                  <input
+                    id="name"
+                    placeholder="Como te chamam dentro do game?"
+                  />
+                </div>
+
+                <div>
+                  <div>
+                    <label htmlFor="yearsPlaying">Joga a quantos anos?</label>
+                    <input
+                      type="number"
+                      id="yearsPlaying"
+                      placeholder="Tudo bem ser ZERO"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="discord">Qual seu discord?</label>
+                    <input
+                      type="text"
+                      id="discord"
+                      placeholder="Usuário#0000"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div>
+                    <label htmlFor="weekDays">Quando costumo jogar</label>
+                  </div>
+                  <div>
+                    <label htmlFor="hourStart">Qual horário do dia?</label>
+                    <div>
+                      <input type="time" id="hoursStart" placeholder="De" />
+                      <input type="time" id="hoursEnd" placeholder="Até" />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <input type="checkbox" />
+                  Costumo me conectar ao chat de voz
+                </div>
+
+                <footer>
+                  <button>Cancelar</button>
+                  <button type="submit">
+                    <GameController />
+                    Encontrar duo
+                  </button>
+                </footer>
+              </form>
+            </Dialog.Content>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
   );
 }

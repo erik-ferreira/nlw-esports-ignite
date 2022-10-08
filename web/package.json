@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@hookform/resolvers": "^2.9.8",
     "@radix-ui/react-checkbox": "^1.0.0",
     "@radix-ui/react-dialog": "^1.0.0",
     "@radix-ui/react-toggle-group": "^1.0.0",
@@ -17,9 +16,7 @@
     "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.37.0",
-    "react-toastify": "^9.0.8",
-    "yup": "^0.32.11"
+    "react-toastify": "^9.0.8"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",

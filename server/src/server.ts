@@ -8,9 +8,7 @@ import {
 } from "./utils/format";
 
 const app = express();
-const prisma = new PrismaClient({
-  log: ["query"],
-});
+const prisma = new PrismaClient({});
 
 app.use(express.json());
 app.use(cors());
@@ -33,7 +31,7 @@ app.post("/games/:gameId/ads", async (request, response) => {
   const gameId = request.params?.gameId;
   const body = request.body;
 
-  const ad = await prisma.ad.create({
+  await prisma.ad.create({
     data: {
       gameId,
       name: body.name,

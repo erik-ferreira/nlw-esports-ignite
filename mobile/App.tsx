@@ -6,6 +6,7 @@ import {
   Inter_700Bold,
   Inter_900Black,
 } from "@expo-google-fonts/inter";
+import FlashMessage from "react-native-flash-message";
 
 import { Routes } from "./src/routes/index.routes";
 
@@ -28,6 +29,11 @@ export default function App() {
         translucent
       />
       {fontsLoaded ? <Routes /> : <Loading />}
+      <FlashMessage
+        floating
+        duration={1600}
+        statusBarHeight={StatusBar.currentHeight}
+      />
     </Background>
   );
 }

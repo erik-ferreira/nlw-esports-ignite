@@ -32,16 +32,19 @@ function Game() {
   const game = route?.params as GameParams;
 
   const [duos, setDuos] = useState<DuoCardData[]>([]);
-  console.log("DUOS", duos);
   const [discordDuoSelected, setDiscordDuoSelected] = useState("a");
   const showModalDuoMatch = discordDuoSelected.length > 0;
 
-  function handleOpenModal(discord: string) {
-    setDiscordDuoSelected(discord);
-  }
-
   function handleCloseModal() {
     setDiscordDuoSelected("");
+  }
+
+  async function handleGetDiscordUser(adsId: string) {
+    const response = await api.get<{ discord: string }>(
+      `/ads/${adsId}/discord`
+    );
+
+    setDiscordDuoSelected(response.data.discord);
   }
 
   async function getListAdsByGame() {
@@ -95,7 +98,7 @@ function Game() {
             data={duos}
             keyExtractor={(item) => item.id}
             renderItem={({ item: ad }) => (
-              <DuoCard ad={ad} onConnect={() => {}} />
+              <DuoCard ad={ad} onConnect={() => handleGetDiscordUser(ad.id)} />
             )}
             horizontal
             style={styles.containerList}
@@ -113,7 +116,7 @@ function Game() {
 
         <DuoMatch
           visible={showModalDuoMatch}
-          discord="Erik Ferreira#1104"
+          discord={discordDuoSelected}
           onCloseModal={handleCloseModal}
         />
       </SafeAreaView>

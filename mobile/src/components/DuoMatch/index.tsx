@@ -1,11 +1,21 @@
-import { View, Text, Modal, ModalProps, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Modal,
+  ModalProps,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import * as Clipboard from "expo-clipboard";
 import { MaterialIcons } from "@expo/vector-icons";
 import { CheckCircle } from "phosphor-react-native";
+import { showMessage } from "react-native-flash-message";
 
 import { Heading } from "../Heading";
 
 import { styles } from "./styles";
 import { THEME } from "../../theme";
+import { useState } from "react";
 
 interface DuoMatchProps extends ModalProps {
   discord: string;
@@ -13,8 +23,40 @@ interface DuoMatchProps extends ModalProps {
 }
 
 function DuoMatch({ discord, onCloseModal, ...rest }: DuoMatchProps) {
+  const [isCopping, setIsCopping] = useState(false);
+
+  async function handleCopyDiscordToClipboard() {
+    try {
+      setIsCopping(true);
+
+      const successIsCopping = await Clipboard.setStringAsync(discord);
+
+      if (successIsCopping) {
+        onCloseModal();
+
+        showMessage({
+          message: "Discord Copiado!",
+          description:
+            "Usuário copiado para você colocar no Discord e encontrar essa pessoa.",
+          type: "success",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      onCloseModal();
+      showMessage({
+        message: "Ops...",
+        description: "Não foi possível copiar o discord. Tente novamente!",
+        type: "danger",
+        backgroundColor: "#fbbf24",
+      });
+    } finally {
+      setIsCopping(false);
+    }
+  }
+
   return (
-    <Modal transparent {...rest}>
+    <Modal transparent statusBarTranslucent {...rest}>
       <View style={styles.container}>
         <View style={styles.content}>
           <TouchableOpacity style={styles.buttonClose} onPress={onCloseModal}>
@@ -35,8 +77,18 @@ function DuoMatch({ discord, onCloseModal, ...rest }: DuoMatchProps) {
 
           <Text style={styles.label}>Adicione no Discord</Text>
 
-          <TouchableOpacity style={styles.discordButton}>
-            <Text style={styles.discord}>{discord}</Text>
+          <TouchableOpacity
+            style={styles.discordButton}
+            onPress={handleCopyDiscordToClipboard}
+            disabled={isCopping}
+          >
+            <Text style={styles.discord}>
+              {isCopping ? (
+                <ActivityIndicator color={THEME.COLORS.PRIMARY} />
+              ) : (
+                discord
+              )}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

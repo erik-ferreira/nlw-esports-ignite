@@ -14,6 +14,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { api } from "../../services/api";
 
 import { Heading } from "../../components/Heading";
+import { DuoMatch } from "../../components/DuoMatch";
 import { Background } from "../../components/Background";
 import { DuoCard, DuoCardData } from "../../components/DuoCard";
 
@@ -31,6 +32,17 @@ function Game() {
   const game = route?.params as GameParams;
 
   const [duos, setDuos] = useState<DuoCardData[]>([]);
+  console.log("DUOS", duos);
+  const [discordDuoSelected, setDiscordDuoSelected] = useState("a");
+  const showModalDuoMatch = discordDuoSelected.length > 0;
+
+  function handleOpenModal(discord: string) {
+    setDiscordDuoSelected(discord);
+  }
+
+  function handleCloseModal() {
+    setDiscordDuoSelected("");
+  }
 
   async function getListAdsByGame() {
     const response = await api.get<DuoCardData[]>(`/games/${game.id}/ads`);
@@ -98,6 +110,12 @@ function Game() {
             )}
           />
         </ScrollView>
+
+        <DuoMatch
+          visible={showModalDuoMatch}
+          discord="Erik Ferreira#1104"
+          onCloseModal={handleCloseModal}
+        />
       </SafeAreaView>
     </Background>
   );

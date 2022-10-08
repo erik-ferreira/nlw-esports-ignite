@@ -8,6 +8,7 @@ import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { api } from "../services/api";
 
 import { Input } from "@components/Form/Input";
+import { Select } from "@components/Form/Select";
 
 interface Game {
   id: string;
@@ -111,22 +112,7 @@ export function CreateAdModal() {
             <label htmlFor="game" className="font-semibold">
               Qual o game?
             </label>
-            <select
-              id="game"
-              name="game"
-              className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 appearance-none"
-              defaultValue="0"
-            >
-              <option disabled value="0">
-                Selecione o game que deseja jogar
-              </option>
-
-              {games.map((game) => (
-                <option value={game.id} key={game.id}>
-                  {game.title}
-                </option>
-              ))}
-            </select>
+            <Select id="game" name="game" defaultValue="0" games={games} />
           </div>
 
           <div className="flex flex-col gap-2">
